@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from api.api.routes import router
+from app.api.routes import router
 
-api = FastAPI(title="AI Document Intelligence API")
+app = FastAPI(title="AI Document Intelligence API")
 
-app.include_router(route)
+app.include_router(router)	
