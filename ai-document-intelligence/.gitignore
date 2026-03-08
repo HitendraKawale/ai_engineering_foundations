@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment
+venv/
+.env
+
+# Data
+data/uploads/
+data/vector_db/
+
+# Mac
+.DS_Store
+
+# Logs
+*.log
+
+# Jupyter
+.ipynb_checkpoints
+
+# VSCode
+.vscode/
+
+# Python packaging
+build/
+dist/
+*.egg-info/
