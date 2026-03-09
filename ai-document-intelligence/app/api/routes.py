@@ -3,6 +3,7 @@ from app.services.chunking import chunk_text
 import os 
 from app.services.embeddings import get_embedding
 from app.services.pdf_parser import extract_text_from_pdf
+from app.services.vector_store import VectorStore
 
 router = APIRouter()
 
@@ -29,10 +30,15 @@ async def upload_pdf(file: UploadFile = File(...)):
     # Get embeddings for each chunk
     embeddings = get_embedding(chunks)
 
+    # Store the chunks and embeddings in the vector store
+    vector_store = VectorStore(384)  # Assuming embedding dimension is 384
+    vector_store.add_embeddings(embeddings, chunks)
+    
     return {
         "filename": file.filename,
         "extracted_text": extracted_text,
         "text_length": len(extracted_text), 
         "num_chunks": len(chunks),
-        "embedding_dimensions": len(embeddings[0])
+        "embedding_dimensions": len(embeddings[0]),
+        "stored_vectors": len(vector_store.text_chunks)
     }
