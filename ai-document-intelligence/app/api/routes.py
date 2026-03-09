@@ -13,6 +13,8 @@ UPLOAD_DIR = "data/uploads"
 def health_check():
     return {"message": "API is working!"}
 
+vector_store = VectorStore(384)  # Initialize the vector store
+
 @router.post("/upload/")
 async def upload_pdf(file: UploadFile = File(...)):
     file_path = os.path.join(UPLOAD_DIR, file.filename)
@@ -31,7 +33,6 @@ async def upload_pdf(file: UploadFile = File(...)):
     embeddings = get_embedding(chunks)
 
     # Store the chunks and embeddings in the vector store
-    vector_store = VectorStore(384)  # Assuming embedding dimension is 384
     vector_store.add_embeddings(embeddings, chunks)
     
     return {
