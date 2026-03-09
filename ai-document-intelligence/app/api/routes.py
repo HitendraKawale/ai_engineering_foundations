@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File
 from app.services.chunking import chunk_text
 import os 
-
+from app.services.embeddings import get_embedding
 from app.services.pdf_parser import extract_text_from_pdf
 
 router = APIRouter()
@@ -26,9 +26,13 @@ async def upload_pdf(file: UploadFile = File(...)):
     # Chunk the extracted text
     chunks = chunk_text(extracted_text)
 
+    # Get embeddings for each chunk
+    embeddings = get_embedding(chunks)
+
     return {
         "filename": file.filename,
         "extracted_text": extracted_text,
         "text_length": len(extracted_text), 
-        "num_chunks": len(chunks)
+        "num_chunks": len(chunks),
+        "embedding_dimensions": len(embeddings[0])
     }
