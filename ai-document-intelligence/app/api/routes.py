@@ -7,7 +7,7 @@ from app.services.embeddings import get_embedding
 from app.services.pdf_parser import extract_text_from_pdf
 from app.services.vector_store import VectorStore
 from app.services.llm_service import generate_answer
-
+from app.services.rag_pipeline import run_rag 
 
 router = APIRouter()
 
@@ -65,7 +65,7 @@ async def query_documents(request: QuestionRequest):
     question = request.question
 
     # Convert question to embedding
-    query_embedding = get_embedding([question])
+    query_embedding = get_embedding([question])[0]
 
     # Retrieve relevant chunks
     chunks = vector_store.search(query_embedding, top_k=3)
@@ -79,5 +79,5 @@ async def query_documents(request: QuestionRequest):
     return {
         "question": question,
         "answer": answer,
-        "sources": chunks
+        "retrieved_chunks": chunks
     }
