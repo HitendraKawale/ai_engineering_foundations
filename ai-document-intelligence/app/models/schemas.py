@@ -4,7 +4,7 @@ from typing import List, Optional
 class QuestionRequest(BaseModel):
     question: str
 
-class QuestionResponse(BaseModel):
+class QueryResponse(BaseModel):
     question: str
     answer: str
     retrieved_chunks: List[str]

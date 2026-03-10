@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-API_URL = "http://localhost:8000"
+API_URL = "http://rag-api:8000"
 
 st.title("AI Document Intelligence")
 
@@ -26,16 +26,20 @@ question = st.text_input("Enter your question")
 if st.button("Ask"):
     response = requests.post(
         f"{API_URL}/query",
-        json={"question": question}
+        json={"question": question},
+        timeout=30
     )
 
     if response.status_code == 200:
         data = response.json()
 
         st.subheader("Answer")
-        st.write(data["answer"])
+        answer = data.get("answer", "No answer returned")
+        if answer:
+            st.write(answer)
+        else:
+            st.write("No answer returned — check that PDF was uploaded and vector store is populated.")
 
         st.subheader("Retrieved Context")
-        if "retrieved_chunks" in data:
-            for chunk in data["retrieved_chunks"]:
-                st.write(f"- {chunk}")
+        for chunk in data.get("retrieved_chunks", []):
+            st.write(f"- {chunk}")
