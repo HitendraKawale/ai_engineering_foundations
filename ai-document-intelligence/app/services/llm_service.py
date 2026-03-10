@@ -20,7 +20,7 @@ Answer:
 """
 
     response = requests.post(
-        "http://host.docker.internal:11434/api/generate",
+        "http://ollama:11434/api/generate",
         json={
             "model": "mistral",
             "prompt": prompt
