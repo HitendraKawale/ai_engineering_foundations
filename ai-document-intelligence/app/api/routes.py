@@ -15,12 +15,8 @@ router = APIRouter()
 
 
 # Initialize vector store once
-vector_store = VectorStore(384)
-
-
-# Request model for question endpoint
-class QuestionRequest(BaseModel):
-    question: str
+VECTOR_DIM = 384  # Dimension of OpenAI embeddings
+vector_store = VectorStore(VECTOR_DIM)
 
 
 # Health check

@@ -24,6 +24,9 @@ class VectorStore:
         self.save()
 
     def search(self, query_embedding: np.ndarray, top_k: int = 5):
+        if len(self.text_chunks) == 0:
+            return []
+        k = min(top_k, len(self.text_chunks))
         query_embedding = np.array(query_embedding).astype('float32').reshape(1, -1)
         distances, indices = self.index.search(query_embedding, top_k)
         results = []

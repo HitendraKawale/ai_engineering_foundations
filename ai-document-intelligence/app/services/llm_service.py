@@ -5,14 +5,18 @@ import json
 import requests
 
 def generate_answer(question, context):
-   
-    limit = 4000  
+    """
+    Sends the question + context to Ollama Mistral model and returns the answer.
+    Truncates context if too long, handles HTTP errors gracefully.
+    """
+    # Limit context to prevent oversized prompts
+    limit = 4000
     context = context[:limit]
 
     prompt = f"""
 You are a helpful assistant.
 Answer the question using ONLY the context below.
-If multiple facts are relevant, mention all of them in your answer.
+If multiple facts are relevant, mention all of them.
 
 Context:
 {context}
@@ -27,27 +31,19 @@ Answer:
 
     try:
         response = requests.post(
-            "http://ollama:11434/completions",
+            "http://ollama:11434/api/generate",
             json={
-                "model": "mistral",
+                "model": "mistral:latest",  
                 "prompt": prompt
             },
             timeout=30
         )
-
-        # Check for HTTP errors
         response.raise_for_status()
-
-        # Parse JSON directly
         data = response.json()
-
-        # Extract the answer safely
         answer = data.get("response", "").strip()
 
-        # Fallback if empty
         if not answer:
-            answer = "No answer returned — check that the model received the prompt correctly."
-
+            return "No answer returned — check that the model received the prompt correctly."
         return answer
 
     except requests.exceptions.RequestException as e:

@@ -1,4 +1,4 @@
-def chunk_text(text: str, chunk_size: int = 500, overlap: int = 50):
+def chunk_text(text: str, chunk_size: int = 1000, overlap: int = 100):
     """
     Splits the input text into chunks of specified size with optional overlap.
 
