@@ -8,10 +8,11 @@ from app.services.pdf_parser import extract_text_from_pdf
 from app.services.vector_store import VectorStore
 from app.services.llm_service import generate_answer
 from app.services.rag_pipeline import run_rag 
+from app.services.schemas import QuestionRequest, QueryResponse
+from app.core.config import UPLOAD_DIR
 
 router = APIRouter()
 
-UPLOAD_DIR = "data/uploads"
 
 # Initialize vector store once
 vector_store = VectorStore(384)
@@ -59,7 +60,7 @@ async def upload_pdf(file: UploadFile = File(...)):
 
 
 # Query endpoint
-@router.post("/query/")
+@router.post("/query/", response_model=QueryResponse)
 async def query_documents(request: QuestionRequest):
 
     question = request.question

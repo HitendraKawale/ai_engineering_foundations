@@ -1,6 +1,7 @@
 from app.services.embeddings import get_embedding
 from app.services.vector_store import VectorStore
 from app.services.llm_service import generate_answer
+from app.utils.logger import logger
 
 vector_store = VectorStore(dimension=384)
 
@@ -19,3 +20,7 @@ def run_rag(question: str):
     answer = generate_answer(question, context)
 
     return answer, retrieved_chunks
+
+#logger
+logger.info("RAG pipeline initialized and ready to process questions.")
+logger.info(f"retrieved_chunks: {retrieved_chunks}")
