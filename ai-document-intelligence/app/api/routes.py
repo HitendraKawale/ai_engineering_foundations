@@ -109,7 +109,9 @@ async def query_documents(request: QuestionRequest):
         }
 
     # Combine chunks into context
+    limit = 4000
     context = "\n".join(chunks)
+    context = context[:limit]
     print(f"[DEBUG] Context length: {len(context)} characters")
 
     # Generate answer using LLM
