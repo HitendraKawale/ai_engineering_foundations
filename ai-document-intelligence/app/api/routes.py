@@ -79,5 +79,5 @@ async def query_documents(request: QuestionRequest):
     return {
         "question": question,
         "answer": answer,
-        "retrieved_chunks": chunks
+        "sources": chunks
     }
