@@ -22,17 +22,20 @@ st.subheader("Ask a Question")
 question = st.text_input("Enter your question")
 
 if st.button("Ask") and question:
-    response = requests.post(f"{API_URL}/query/", json={"question": question}, timeout=30)
 
-    if response.status_code == 200:
-        data = response.json()
+    with st.spinner("Thinking..."):
+        response = requests.post(f"{API_URL}/query/", json={"question": question}, timeout=30)
 
-        st.subheader("Answer")
-        answer = data.get("answer", "No answer returned")
-        st.write(answer)
+        if response.status_code == 200:
+            data = response.json()
 
-        st.subheader("Retrieved Context")
-        for chunk in data.get("retrieved_chunks", []):
-            st.write(f"- {chunk}")
-    else:
-        st.error("Query failed")
+            st.subheader("Answer")
+            answer = data.get("answer", "No answer returned")
+            st.write(answer)
+
+            st.subheader("Retrieved Context")
+            for i, chunk in enumerate(data.get("retrieved_chunks", [])):
+                st.markdown(f"**Source {i+1}:**")
+                st.write(f"- {chunk}")
+        else:
+            st.error("Query failed")

@@ -11,4 +11,4 @@ os.makedirs(VECTOR_DIR, exist_ok=True)
 OLLAMA_HOST = "127.0.0.1"
 OLLAMA_PORT = 11434
 OLLAMA_URL = f"http://{OLLAMA_HOST}:{OLLAMA_PORT}"
-MODEL_NAME = "mistral: latest"  # Change this to your desired model
+MODEL_NAME = "mistral:latest"  # Change this to your desired model

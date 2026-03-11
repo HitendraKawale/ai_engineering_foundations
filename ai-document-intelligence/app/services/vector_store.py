@@ -15,11 +15,12 @@ class VectorStore:
             with open(self.meta_path, "rb") as f:
                 self.text_chunks = pickle.load(f)
         else:
-            self.index = faiss.IndexFlatL2(dimension)
+            self.index = faiss.IndexFlatIP(dimension)
             self.text_chunks = []
 
     def add_embeddings(self, embeddings, chunks):
         embeddings = np.array(embeddings).astype('float32')
+        faiss.normalize_L2(embeddings)
         self.index.add(embeddings)
         self.text_chunks.extend(chunks)
         self.save()
@@ -29,6 +30,7 @@ class VectorStore:
             return []
         k = min(top_k, len(self.text_chunks))
         query_embedding = np.array(query_embedding).astype('float32').reshape(1, -1)
+        faiss.normalize_L2(query_embedding)
         distances, indices = self.index.search(query_embedding, k)
         results = []
         for idx in indices[0]:
