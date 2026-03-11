@@ -24,10 +24,12 @@ Answer:
 
     try:
         result = subprocess.run(
-            ["ollama", "run", "mistral"],
+            ["ollama", "run", "mistral:latest"],
             input=prompt,
             capture_output=True,
-            text=True
+            text=True,
+            timeout=30,
+            check=False
         )
 
         if result.returncode != 0:
