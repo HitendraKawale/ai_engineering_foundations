@@ -1,22 +1,17 @@
-import requests
-import json
+# app/services/llm_service.py
 
+import subprocess
 
-import requests
-
-def generate_answer(question, context):
+def generate_answer(question: str, context: str) -> str:
     """
-    Sends the question + context to Ollama Mistral model and returns the answer.
-    Truncates context if too long, handles HTTP errors gracefully.
+    Generate answer using local Ollama Mistral via CLI.
     """
-    # Limit context to prevent oversized prompts
-    limit = 4000
-    context = context[:limit]
+
+    context = context[:4000]
 
     prompt = f"""
 You are a helpful assistant.
 Answer the question using ONLY the context below.
-If multiple facts are relevant, mention all of them.
 
 Context:
 {context}
@@ -24,29 +19,21 @@ Context:
 Question:
 {question}
 
-Provide a clear and complete answer.
-
 Answer:
 """
 
     try:
-        response = requests.post(
-            "http://ollama:11434/api/generate",
-            json={
-                "model": "mistral:latest",  
-                "prompt": prompt
-            },
-            timeout=30
+        result = subprocess.run(
+            ["ollama", "run", "mistral"],
+            input=prompt,
+            capture_output=True,
+            text=True
         )
-        response.raise_for_status()
-        data = response.json()
-        answer = data.get("response", "").strip()
 
-        if not answer:
-            return "No answer returned — check that the model received the prompt correctly."
-        return answer
+        if result.returncode != 0:
+            return f"Ollama error: {result.stderr}"
 
-    except requests.exceptions.RequestException as e:
-        return f"LLM API request failed: {e}"
-    except ValueError as e:
-        return f"Failed to parse LLM response: {e}"
+        return result.stdout.strip()
+
+    except Exception as e:
+        return f"LLM CLI call failed: {e}"

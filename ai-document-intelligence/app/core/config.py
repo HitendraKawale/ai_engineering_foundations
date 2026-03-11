@@ -6,3 +6,9 @@ VECTOR_DIR = os.path.join(BASE_DIR, "data", "vector_db")
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(VECTOR_DIR, exist_ok=True)
+
+# ollama server configuration
+OLLAMA_HOST = "127.0.0.1"
+OLLAMA_PORT = 11434
+OLLAMA_URL = f"http://{OLLAMA_HOST}:{OLLAMA_PORT}"
+MODEL_NAME = "mistral: latest"  # Change this to your desired model

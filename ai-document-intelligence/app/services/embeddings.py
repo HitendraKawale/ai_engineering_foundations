@@ -1,4 +1,5 @@
 from sentence_transformers import SentenceTransformer   
+import numpy as np
 
 # Load the pre-trained model
 model = SentenceTransformer('all-MiniLM-L6-v2')

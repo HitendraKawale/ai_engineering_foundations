@@ -1,3 +1,4 @@
+# app/services/vector_store.py
 import faiss
 import numpy as np
 import pickle
@@ -28,7 +29,7 @@ class VectorStore:
             return []
         k = min(top_k, len(self.text_chunks))
         query_embedding = np.array(query_embedding).astype('float32').reshape(1, -1)
-        distances, indices = self.index.search(query_embedding, top_k)
+        distances, indices = self.index.search(query_embedding, k)
         results = []
         for idx in indices[0]:
             if idx < len(self.text_chunks):
@@ -39,3 +40,8 @@ class VectorStore:
         faiss.write_index(self.index, self.index_path)
         with open(self.meta_path, "wb") as f:
             pickle.dump(self.text_chunks, f)
+
+
+# Singleton instance to share across app
+VECTOR_DIM = 384
+vector_store = VectorStore(dimension=VECTOR_DIM)
