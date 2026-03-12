@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+langchain
+langgraph
+faiss-cpu
+sentence-transformers
+duckduckgo-search
+beautifulsoup4
+requests
+pydantic
+python-dotenv
+tqdm
+pytest
