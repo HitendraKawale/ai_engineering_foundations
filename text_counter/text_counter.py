@@ -1,13 +1,22 @@
+# import string
 import string
 
+#
+# with open("test.txt", "r") as f:
+#     text = f.read()
+#     text = text.translate(str.maketrans("", "", string.punctuation))
+# print(text)
 
 with open("test.txt", "r") as f:
     text = f.read()
     text = text.translate(str.maketrans("", "", string.punctuation))
-# print(text)
+
+
+# words = text.lower().split()
+# print(words)
+#
 
 words = text.lower().split()
-print(words)
 
 counts = {}
 
