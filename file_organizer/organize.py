@@ -9,13 +9,16 @@ os.makedirs("results", exist_ok=True)
 
 print(list_of_files)
 
-for i in list_of_files:
-    name, ext = os.path.splitext(i)
+for filename in list_of_files:
+    _, ext = os.path.splitext(filename)
 
     ext_clean = ext[1:]
 
+    if not ext_clean:
+        continue
+
     os.makedirs(os.path.join("results", ext_clean), exist_ok=True)
 
-    source = os.path.join(path, i)
-    destination = os.path.join("results", ext_clean, i)
+    source = os.path.join(path, filename)
+    destination = os.path.join("results", ext_clean, filename)
     shutil.move(source, destination)
