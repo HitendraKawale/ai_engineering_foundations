@@ -7,6 +7,10 @@ import string
 #     text = text.translate(str.maketrans("", "", string.punctuation))
 # print(text)
 
+# with open("test.txt", "r") as f:
+#     text = f.read()
+#     text = text.translate(str.maketrans("", "", string.punctuation))
+
 with open("test.txt", "r") as f:
     text = f.read()
     text = text.translate(str.maketrans("", "", string.punctuation))
